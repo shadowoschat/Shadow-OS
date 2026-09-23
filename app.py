@@ -373,12 +373,16 @@ def _run_automation(commands):
 # -----------------------------
 # AUTHENTICATION ROUTES
 # -----------------------------
+def role_is_admin(role_value):
+    return str(role_value or '').strip().lower() in {'admin', 'owner'}
+
+
 @app.route("/")
 def index():
     # Always show loading page first if no user session
     if 'user' not in session:
         return render_template("loading.html")
-    return redirect('/admin' if session.get('role') == 'admin' else '/dashboard')
+    return redirect('/admin' if is_admin_session() else '/dashboard')
 
 
 @app.route("/loading")
@@ -389,14 +393,14 @@ def loading():
 @app.route("/login")
 def login_page():
     if 'user' in session:
-        return redirect('/admin' if session.get('role') == 'admin' else '/dashboard')
+        return redirect('/admin' if is_admin_session() else '/dashboard')
     return render_template("login.html")
 
 
 @app.route("/signup")
 def signup_page():
     if 'user' in session:
-        return redirect('/admin' if session.get('role') == 'admin' else '/dashboard')
+        return redirect('/admin' if is_admin_session() else '/dashboard')
     return render_template("signup.html")
 
 
@@ -423,7 +427,7 @@ def otp_page():
 def main_app():
     if 'user' not in session:
         return redirect('/login')
-    return redirect('/admin' if session.get('role') == 'admin' else '/dashboard')
+    return redirect('/admin' if is_admin_session() else '/dashboard')
 
 
 
@@ -480,7 +484,7 @@ def api_login():
         session['access_token'] = auth_res.session.access_token
         
         record_login_event(user_id, success=True, details='User login via Supabase', ip_address=request.remote_addr)
-        return jsonify({'success': True, 'redirect': '/admin' if role == 'admin' else '/dashboard'})
+        return jsonify({'success': True, 'redirect': '/admin' if role_is_admin(role) else '/dashboard'})
     except Exception as e:
         record_login_event(identifier, success=False, details=str(e), ip_address=request.remote_addr)
         return jsonify({'success': False, 'message': 'Invalid credentials or unverified email.'}), 401
@@ -499,8 +503,7 @@ def api_logout():
 
 
 def is_admin_session():
-    role = str(session.get('role') or '').strip().lower()
-    if role in {'admin', 'owner'}:
+    if role_is_admin(session.get('role')):
         return True
 
     user_id = session.get('user_id')
@@ -512,7 +515,7 @@ def is_admin_session():
         user = get_user_by_id(user_id)
         if not user:
             return False
-        return str(user.get('role') or '').strip().lower() in {'admin', 'owner'}
+        return role_is_admin(user.get('role'))
     except Exception as exc:
         app.logger.warning('Admin session check failed for %s: %s', user_id, exc)
         return False
@@ -682,7 +685,7 @@ def profile_page():
 def app_index():
     if 'user' not in session:
         return redirect('/login')
-    return redirect('/admin' if session.get('role') == 'admin' else '/dashboard')
+    return redirect('/admin' if is_admin_session() else '/dashboard')
 
 
 @app.route("/chatbot")
