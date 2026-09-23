@@ -1,0 +1,669 @@
+/* ==========================================================================
+   SHADOW OS — Futuristic Dashboard Stylesheet
+   Blueprint 3-Column Architecture:
+   [Left: System Status + Environment] [Center: AI Core HUD] [Right: Network + Visual Input]
+   ========================================================================== */
+
+/* Overall Dashboard Matrix Layout */
+.dashboard-matrix {
+  display: grid;
+  grid-template-columns: 310px 1fr 320px;
+  gap: 16px;
+  height: calc(100vh - var(--navbar-height) - 72px);
+  min-height: 640px;
+  width: 100%;
+}
+
+/* Common Cyber HUD Panel */
+.hud-panel {
+  background: var(--bg-panel);
+  border: 1px solid var(--border-neon);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7), inset 0 0 15px rgba(0, 234, 255, 0.04);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  transition: var(--trans-smooth);
+}
+
+.hud-panel:hover {
+  border-color: rgba(0, 234, 255, 0.45);
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 234, 255, 0.12);
+}
+
+.hud-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid rgba(0, 234, 255, 0.15);
+  background: rgba(3, 10, 26, 0.4);
+  flex-shrink: 0;
+}
+
+.hud-panel-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--cyan);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.hud-panel-title svg {
+  width: 16px;
+  height: 16px;
+  stroke: var(--cyan);
+  filter: drop-shadow(0 0 4px var(--cyan-glow));
+}
+
+.hud-panel-body {
+  flex: 1;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+/* ==========================================================================
+   LEFT COLUMN: SYSTEM STATUS (TOP) + ENVIRONMENT (BOTTOM)
+   ========================================================================== */
+.dashboard-left-col {
+  display: grid;
+  grid-template-rows: 1.15fr 1fr;
+  gap: 16px;
+  height: 100%;
+}
+
+/* 1. System Status Panel */
+.system-status-panel .hud-panel-body {
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.telemetry-row {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 0px;
+}
+
+.telemetry-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+}
+
+.telemetry-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-secondary);
+}
+
+.telemetry-label svg {
+  width: 14px;
+  height: 14px;
+  stroke: var(--cyan);
+}
+
+.telemetry-val {
+  color: #ffffff;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  letter-spacing: 0.5px;
+}
+
+.telemetry-track {
+  width: 100%;
+  height: 7px;
+  background: rgba(0, 234, 255, 0.08);
+  border: 1px solid rgba(0, 234, 255, 0.2);
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+}
+
+.telemetry-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #0077ff 0%, #00eaff 70%, #00ff9d 100%);
+  border-radius: 4px;
+  box-shadow: 0 0 10px rgba(0, 234, 255, 0.5);
+  transition: width 0.5s ease;
+}
+
+/* Power / Battery Badge Box */
+.power-telemetry-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: rgba(4, 12, 28, 0.7);
+  border: 1px solid rgba(0, 234, 255, 0.25);
+  border-radius: var(--radius-sm);
+  margin-top: 4px;
+}
+
+.power-level-label {
+  font-family: var(--font-display);
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: var(--green);
+  letter-spacing: 1px;
+}
+
+.power-status-text {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: #ffffff;
+}
+
+/* 2. Environment / Weather Panel */
+.environment-panel .hud-panel-body {
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.env-hero-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.env-city-name {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.env-temperature {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--cyan);
+  text-shadow: 0 0 16px var(--cyan-glow);
+}
+
+.env-condition-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  background: rgba(0, 234, 255, 0.1);
+  border: 1px solid rgba(0, 234, 255, 0.25);
+  border-radius: 20px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--cyan);
+  width: fit-content;
+}
+
+.env-condition-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 6px var(--green);
+}
+
+/* 3 Environmental Metric Circles / Cards */
+.env-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.env-metric-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 4px;
+  background: rgba(3, 9, 22, 0.6);
+  border: 1px solid rgba(0, 234, 255, 0.12);
+  border-radius: var(--radius-sm);
+  text-align: center;
+}
+
+.env-metric-label {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  color: var(--text-muted);
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+}
+
+.env-metric-value {
+  font-family: var(--font-display);
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-top: 2px;
+}
+
+/* ==========================================================================
+   CENTER COLUMN: MAIN WORKSPACE & AI HUD VISUAL
+   ========================================================================== */
+.center-workspace-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.center-workspace-panel .hud-panel-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  position: relative;
+}
+
+/* Concentric AI Rings Visualizer */
+.ai-hud-visualizer-container {
+  position: relative;
+  width: 260px;
+  height: 260px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: auto 0;
+}
+
+.ai-ring {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.ai-ring-outer {
+  width: 250px;
+  height: 250px;
+  border: 1.5px solid rgba(0, 234, 255, 0.3);
+  border-top-color: var(--cyan);
+  border-bottom-color: var(--cyan);
+  box-shadow: 0 0 20px rgba(0, 234, 255, 0.2);
+  animation: ringRotateClockwise 18s linear infinite;
+}
+
+.ai-ring-middle {
+  width: 190px;
+  height: 190px;
+  border: 1.5px dashed rgba(0, 255, 157, 0.45);
+  animation: ringRotateCounterClockwise 12s linear infinite;
+}
+
+.ai-ring-inner {
+  width: 130px;
+  height: 130px;
+  border: 2px solid rgba(0, 234, 255, 0.5);
+  border-left-color: transparent;
+  border-right-color: transparent;
+  animation: ringRotateClockwise 8s linear infinite;
+}
+
+.ai-core-hub {
+  width: 74px;
+  height: 74px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0, 234, 255, 0.25) 0%, rgba(2, 8, 24, 0.95) 75%);
+  border: 2px solid var(--cyan);
+  box-shadow: 0 0 30px var(--cyan-glow), inset 0 0 15px var(--cyan-glow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--trans-smooth);
+  z-index: 5;
+}
+
+.ai-core-hub:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 45px rgba(0, 234, 255, 0.8), inset 0 0 20px var(--cyan);
+}
+
+.ai-core-hub.listening {
+  border-color: var(--green);
+  box-shadow: 0 0 45px var(--green-glow), inset 0 0 20px var(--green);
+  animation: corePulse 1.2s infinite;
+}
+
+@keyframes corePulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.12); }
+}
+
+.ai-core-hub svg {
+  width: 28px;
+  height: 28px;
+  stroke: var(--cyan);
+  transition: var(--trans-smooth);
+}
+
+.ai-core-hub.listening svg {
+  stroke: var(--green);
+}
+
+@keyframes ringRotateClockwise {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes ringRotateCounterClockwise {
+  from { transform: rotate(360deg); }
+  to { transform: rotate(0deg); }
+}
+
+/* AI Status Banner */
+.ai-status-indicator-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--cyan);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+/* AI Dynamic Response Box */
+.ai-response-display {
+  width: 100%;
+  max-width: 680px;
+  min-height: 48px;
+  max-height: 90px;
+  overflow-y: auto;
+  background: rgba(3, 9, 22, 0.75);
+  border: 1px solid rgba(0, 234, 255, 0.22);
+  border-radius: var(--radius-sm);
+  padding: 10px 16px;
+  font-family: var(--font-sans);
+  font-size: 0.88rem;
+  color: #e6faff;
+  line-height: 1.4;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 14px;
+}
+
+/* Command Input Bar at Bottom */
+.command-interaction-bar {
+  width: 100%;
+  max-width: 680px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.command-input-field {
+  flex: 1;
+  height: 44px;
+  background: rgba(2, 7, 18, 0.95);
+  border: 1px solid rgba(0, 234, 255, 0.35);
+  border-radius: var(--radius-sm);
+  padding: 0 16px;
+  color: #ffffff;
+  font-family: var(--font-sans);
+  font-size: 0.88rem;
+  outline: none;
+  letter-spacing: 0.4px;
+  transition: var(--trans-smooth);
+}
+
+.command-input-field::placeholder {
+  color: rgba(139, 232, 255, 0.4);
+  font-size: 0.82rem;
+}
+
+.command-input-field:focus {
+  border-color: var(--cyan);
+  box-shadow: 0 0 18px rgba(0, 234, 255, 0.35);
+}
+
+.btn-command-execute {
+  height: 44px;
+  padding: 0 18px;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(135deg, rgba(0, 234, 255, 0.2) 0%, rgba(0, 119, 255, 0.3) 100%);
+  border: 1px solid var(--cyan);
+  color: var(--cyan);
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: var(--trans-smooth);
+}
+
+.btn-command-execute:hover {
+  background: var(--cyan);
+  color: #000000;
+  box-shadow: 0 0 20px var(--cyan-glow);
+  transform: translateY(-1px);
+}
+
+.btn-command-mic {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-sm);
+  background: rgba(3, 10, 26, 0.8);
+  border: 1px solid rgba(0, 234, 255, 0.3);
+  color: var(--cyan);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--trans-smooth);
+  flex-shrink: 0;
+}
+
+.btn-command-mic svg {
+  width: 20px;
+  height: 20px;
+}
+
+.btn-command-mic:hover {
+  border-color: var(--cyan);
+  box-shadow: 0 0 14px var(--cyan-glow);
+}
+
+.btn-command-mic.listening {
+  border-color: var(--green);
+  color: var(--green);
+  background: rgba(0, 255, 157, 0.15);
+  box-shadow: 0 0 20px var(--green-glow);
+}
+
+/* ==========================================================================
+   RIGHT COLUMN: NETWORK INFO (TOP) + VISUAL INPUT (BOTTOM)
+   ========================================================================== */
+.dashboard-right-col {
+  display: grid;
+  grid-template-rows: 1fr 1.15fr;
+  gap: 16px;
+  height: 100%;
+}
+
+/* 1. Network Info Panel */
+.network-info-panel .hud-panel-body {
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.network-data-list {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.net-telemetry-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 7px 10px;
+  background: rgba(3, 8, 20, 0.6);
+  border: 1px solid rgba(0, 234, 255, 0.1);
+  border-radius: var(--radius-sm);
+}
+
+.net-label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+.net-val {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--cyan);
+}
+
+.net-status-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--green);
+  letter-spacing: 0.5px;
+}
+
+.net-status-pill.offline {
+  color: var(--pink);
+}
+
+/* 2. Visual Input Panel (Camera) */
+.visual-input-panel .hud-panel-body {
+  justify-content: space-between;
+  gap: 10px;
+}
+
+/* Toggle Switch Widget */
+.hud-switch-toggle {
+  position: relative;
+  width: 44px;
+  height: 22px;
+  background: rgba(255, 0, 85, 0.25);
+  border: 1px solid var(--pink);
+  border-radius: 20px;
+  cursor: pointer;
+  transition: var(--trans-smooth);
+}
+
+.hud-switch-toggle.on {
+  background: rgba(0, 255, 157, 0.25);
+  border-color: var(--green);
+}
+
+.hud-switch-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #ffffff;
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hud-switch-toggle.on .hud-switch-thumb {
+  transform: translateX(22px);
+  background: var(--green);
+  box-shadow: 0 0 8px var(--green);
+}
+
+/* Camera Stream Frame */
+.camera-stream-frame {
+  position: relative;
+  flex: 1;
+  width: 100%;
+  min-height: 160px;
+  background: #01040c;
+  border: 1px solid rgba(0, 234, 255, 0.25);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#cameraFeed {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scaleX(-1);
+  display: none;
+}
+
+.camera-stream-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: rgba(139, 232, 255, 0.4);
+  font-family: var(--font-display);
+  font-size: 0.74rem;
+  letter-spacing: 1px;
+}
+
+.camera-live-badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  display: none;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 8px;
+  background: rgba(255, 0, 85, 0.25);
+  border: 1px solid var(--pink);
+  border-radius: 12px;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: #ff4d79;
+  z-index: 10;
+}
+
+.camera-live-badge.active {
+  display: flex;
+}
+
+.camera-live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--pink);
+  box-shadow: 0 0 6px var(--pink);
+  animation: liveBlink 1.2s infinite;
+}
+
+@keyframes liveBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.25; }
+}
+
+.visual-status-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--text-muted);
+}

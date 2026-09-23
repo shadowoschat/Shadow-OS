@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SHADOW OS — Booting Neural System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Orbitron:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='CSS/loading.css') }}" />
+</head>
+<body>
+  <div class="loading-bg"></div>
+
+  <main class="loading-chassis">
+    <!-- Center Glowing Reactor Core -->
+    <div class="reactor-core">
+      <div class="core-ring core-ring-1"></div>
+      <div class="core-ring core-ring-2"></div>
+      <div class="core-ring core-ring-3"></div>
+      <img src="{{ url_for('static', filename='image/logo.svg') }}" alt="Shadow OS Core" class="core-center-logo" />
+    </div>
+
+    <!-- Branding Titles -->
+    <h1 class="loading-title">SHADOW <span>OS</span></h1>
+    <div class="loading-subtitle">NEURAL OPERATING SYSTEM v2.0</div>
+
+    <!-- Live Progress Bar -->
+    <div class="progress-container">
+      <div class="progress-header">
+        <span>SYSTEM DIAGNOSTIC</span>
+        <span id="percentText">0%</span>
+      </div>
+      <div class="progress-bar-track">
+        <div class="progress-bar-fill" id="progressFill"></div>
+      </div>
+    </div>
+
+    <!-- Live Terminal Status Output -->
+    <div class="status-log-box">
+      <div class="log-line active" id="logLine1">INITIALIZING NEURAL SUBSYSTEMS...</div>
+      <div class="log-line" id="logLine2">Preparing quantum instruction pipeline</div>
+    </div>
+
+    <!-- Skip / Direct Console Button -->
+    <a href="/login" class="btn-enter-system">
+      <span>ENTER CONSOLE</span>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="9 18 15 12 9 6"></polyline>
+      </svg>
+    </a>
+  </main>
+
+  <script src="{{ url_for('static', filename='Js/loading.js') }}"></script>
+</body>
+</html>

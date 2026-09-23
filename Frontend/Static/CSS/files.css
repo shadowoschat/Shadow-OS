@@ -1,0 +1,188 @@
+/* ==========================================================================
+   SHADOW OS — Files Explorer Stylesheet
+   ========================================================================== */
+
+.files-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Storage gauge */
+.storage-gauge-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-neon);
+  border-radius: var(--radius-lg);
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.storage-gauge-bar-wrap {
+  flex: 1;
+  min-width: 200px;
+}
+
+.storage-gauge-label {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.storage-gauge-bar {
+  height: 8px;
+  background: rgba(0, 234, 255, 0.1);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.storage-gauge-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--cyan), #7b2fff);
+  border-radius: 4px;
+  transition: width 0.6s ease;
+}
+
+.storage-stat-group {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.storage-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.storage-stat-val {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--cyan);
+}
+
+.storage-stat-lbl {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+}
+
+/* Category Filter Chips */
+.category-chips-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.cat-chip {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  border: 1px solid rgba(0, 234, 255, 0.2);
+  color: var(--text-muted);
+  background: rgba(4, 10, 24, 0.6);
+  cursor: pointer;
+  transition: var(--trans-smooth);
+}
+
+.cat-chip:hover,
+.cat-chip.active {
+  background: rgba(0, 234, 255, 0.15);
+  border-color: var(--cyan);
+  color: var(--cyan);
+}
+
+/* Files Grid */
+.files-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.file-card {
+  background: rgba(6, 12, 26, 0.8);
+  border: 1px solid rgba(0, 234, 255, 0.14);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  cursor: pointer;
+  transition: var(--trans-smooth);
+}
+
+.file-card:hover {
+  border-color: var(--cyan);
+  background: rgba(0, 234, 255, 0.06);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+
+.file-icon-wrap {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+}
+
+.file-card-name {
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  color: #fff;
+  word-break: break-word;
+}
+
+.file-card-meta {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+/* Search Bar Row */
+.files-controls-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.files-search-wrap {
+  position: relative;
+  flex: 1;
+  max-width: 380px;
+}
+
+.files-search-wrap svg {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+}
+
+.files-search-input {
+  width: 100%;
+  padding: 10px 14px 10px 38px;
+  background: rgba(4, 9, 20, 0.85);
+  border: 1px solid rgba(0, 234, 255, 0.2);
+  border-radius: var(--radius-md);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  outline: none;
+}
+
+.files-search-input:focus {
+  border-color: var(--cyan);
+  box-shadow: 0 0 12px rgba(0, 234, 255, 0.2);
+}

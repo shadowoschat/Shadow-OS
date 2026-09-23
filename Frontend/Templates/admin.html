@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="blue">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SHADOW OS — Admin Panel</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/sidebar.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/responsive.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/admin.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/dashboard.css') }}" />
+  </head>
+  
+  <body>
+
+  <div class="mobile-sidebar-backdrop" id="mobileBackdrop"></div>
+
+<header class="top-navbar" id="topNavbar">
+    <div class="navbar-left">
+      <div class="window-controls" title="Neural Matrix Online">
+        <span class="ctrl-dot red"></span>
+        <span class="ctrl-dot yellow"></span>
+        <span class="ctrl-dot green"></span>
+      </div>
+      <a href="/dashboard" class="navbar-brand-link">
+        <img src="{{ url_for('static', filename='image/logo.svg') }}" alt="Shadow OS Logo" class="navbar-logo-img" />
+        <div class="navbar-brand-text">
+          <span class="navbar-brand-title">SHADOW <span class="accent">OS</span></span>
+          <span class="navbar-brand-badge">NEURAL SYSTEM</span>
+        </div>
+      </a>
+    </div>
+
+    <div class="navbar-center">
+      <div class="global-search-container">
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input type="text" id="globalSearchInput" placeholder="Search commands, modules, neural files..." autocomplete="off" />
+        <div class="search-results-dropdown" id="searchResultsDropdown" style="display: none;"></div>
+      </div>
+    </div>
+
+    <div class="navbar-right">
+      <!-- Notification -->
+      <div class="nav-action-wrap">
+        <button class="nav-action-btn" id="navNotifBtn" title="System Notifications">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+          </svg>
+          <span class="notif-badge-pulse" id="notifBadge"></span>
+        </button>
+        <div class="dropdown-menu notif-dropdown" id="notifDropdown" style="display: none;">
+          <div class="dropdown-header">
+            <span>SYSTEM LOGS & ALERTS</span>
+            <button class="clear-notif-btn" id="clearNotifBtn">CLEAR</button>
+          </div>
+          <div class="notif-list" id="notifList">
+            <div class="notif-item">
+              <span class="notif-dot online"></span>
+              <div class="notif-info">
+                <span class="notif-title">Neural Engine Synchronized</span>
+                <span class="notif-time">All modules operational</span>
+              </div>
+            </div>
+            <div class="notif-item">
+              <span class="notif-dot update"></span>
+              <div class="notif-info">
+                <span class="notif-title">Telemetry Sensor Active</span>
+                <span class="notif-time">System monitoring online</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Network Status Indicator -->
+      <div class="network-status-indicator" id="navNetworkStatus" title="Network Telemetry">
+        <span class="network-dot"></span>
+        <span class="network-label" id="navNetworkLabel">ONLINE</span>
+      </div>
+
+      <!-- Settings -->
+      <div class="nav-action-wrap">
+        <button class="nav-action-btn" id="navSettingsBtn" title="System Settings">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+          </svg>
+        </button>
+        <div class="dropdown-menu settings-dropdown" id="settingsDropdown" style="display: none;">
+          <a href="/profile" class="dropdown-item">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <span>Operator Profile</span>
+          </a>
+          <a href="/api-keys" class="dropdown-item">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2l-2 2m-1.5 1.5L16 7l-1.5-1.5-1.5 1.5 1.5 1.5-1.5 1.5 1.5 1.5-4 4a5.5 5.5 0 1 1-7.778-7.778 5.5 5.5 0 0 1 7.778 0L21 2z"></path></svg>
+            <span>Neural API Keys</span>
+          </a>
+          <a href="/upgrade" class="dropdown-item">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"></path></svg>
+            <span>System Tiers</span>
+          </a>
+          <div class="dropdown-divider"></div>
+          <button class="dropdown-item danger logout-btn" id="navLogoutBtn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+            <span>Disconnect Session</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile Menu Toggle -->
+      <button class="mobile-menu-toggle" id="mobileMenuBtn" aria-label="Open Navigation">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="app-layout">
+
+    <aside class="sidebar" id="mainSidebar">
+      <!-- Clean Top Controls Bar -->
+      <div class="sidebar-top-strip">
+        <span class="sidebar-title-label">ADMIN CONTROL</span>
+        <button class="mobile-sidebar-close" id="mobileSidebarClose" aria-label="Close Sidebar">✕</button>
+        <button class="sidebar-toggle-btn" id="sidebarToggleBtn" aria-label="Toggle Sidebar" title="Collapse / Expand Sidebar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Navigation Menu -->
+      <nav class="sidebar-nav">
+        <a href="#" class="nav-item active" data-section="dashboard" data-tooltip="Dashboard">
+          <div class="nav-icon"><span style="font-size:1.2rem">⬚</span></div>
+          <span class="nav-label">Dashboard</span>
+        </a>
+        <a href="#" class="nav-item" data-section="users" data-tooltip="Users">
+          <div class="nav-icon"><span style="font-size:1.2rem">👤</span></div>
+          <span class="nav-label">Users</span>
+        </a>
+        <a href="#" class="nav-item" data-section="keys" data-tooltip="API Keys">
+          <div class="nav-icon"><span style="font-size:1.2rem">🔑</span></div>
+          <span class="nav-label">API Keys</span>
+        </a>
+        <a href="#" class="nav-item" data-section="terminal" data-tooltip="Terminal">
+          <div class="nav-icon"><span style="font-size:1.2rem">▶_</span></div>
+          <span class="nav-label">Terminal</span>
+        </a>
+        <a href="#" class="nav-item" data-section="inbox" data-tooltip="Inbox">
+          <div class="nav-icon"><span style="font-size:1.2rem">✉</span></div>
+          <span class="nav-label">Inbox</span>
+        </a>
+        <a href="#" class="nav-item" data-section="theme" data-tooltip="Theme">
+          <div class="nav-icon"><span style="font-size:1.2rem">◐</span></div>
+          <span class="nav-label">Theme</span>
+        </a>
+        <a href="#" class="nav-item" data-section="sql" data-tooltip="SQL / Database">
+          <div class="nav-icon"><span style="font-size:1.2rem">☡</span></div>
+          <span class="nav-label">SQL / Database</span>
+        </a>
+        <a href="#" class="nav-item" data-section="logs" data-tooltip="Data / Logs">
+          <div class="nav-icon"><span style="font-size:1.2rem">≡</span></div>
+          <span class="nav-label">Data / Logs</span>
+        </a>
+
+        <!-- SYSTEM Divider -->
+        <div class="nav-section-title">SYSTEM</div>
+        <a href="/dashboard" class="nav-item" data-tooltip="User Dashboard">
+          <div class="nav-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="7" height="7"></rect>
+              <rect x="14" y="3" width="7" height="7"></rect>
+              <rect x="14" y="14" width="7" height="7"></rect>
+              <rect x="3" y="14" width="7" height="7"></rect>
+            </svg>
+          </div>
+          <span class="nav-label">User Dashboard</span>
+        </a>
+      </nav>
+
+      <!-- Sidebar Bottom: Real Logged-in Operator Profile Card (NO LOGOUT BUTTON) -->
+      <div class="sidebar-footer">
+        <a href="/profile" class="operator-profile-card" title="View Account Profile">
+          <div class="operator-avatar">
+            <img src="{{ url_for('static', filename='image/robot.svg') }}" alt="Operator Avatar" />
+            <span class="operator-online-dot"></span>
+          </div>
+          <div class="operator-info">
+            <span class="operator-name" id="operatorName">Operator</span>
+            <span class="operator-email" id="operatorEmail">operator@shadow.os</span>
+            <span class="operator-status-badge">
+              <span style="width: 5px; height: 5px; border-radius: 50%; background: var(--green);"></span>
+              <span id="operatorRole">ADMIN</span>
+            </span>
+          </div>
+        </a>
+      </div>
+    </aside>
+
+
+    <div class="main-wrapper">
+<header class="top-header">
+        <div class="header-left">
+          <div class="page-breadcrumb">
+            <span class="root">SHADOW OS</span>
+            <span class="sep">/</span>
+            <span class="current" id="breadcrumb-section">Admin Dashboard</span>
+          </div>
+        </div>
+        <div class="header-right">
+          <div class="header-clock" id="headerClock">00:00:00 UTC</div>
+        </div>
+      </header>
+
+      <main class="page-container">
+<div class="content-wrap">
+          <!-- ============ 1. DASHBOARD ============ -->
+          <section id="section-dashboard" class="content-section active">
+            <div class="page-header">
+              <div>
+                <div class="eyebrow">
+                  <span></span>01 / OVERVIEW
+                </div>
+                <h1>Admin Dashboard</h1>
+                <p>System health, usage signals, and operational activity at a glance.</p>
+              </div>
+              <button class="button secondary" onclick="showToast('Dashboard refreshed')"><span class="btn-icon">↻</span> Refresh data</button>
+            </div>
+
+            <div class="kpi-grid" id="kpi-grid"></div>
+
+            <div class="metrics-grid" id="metrics-grid"></div>
+
+            <div class="dashboard-grid">
+              <!-- System Activity -->
+              <div class="section-card activity-card">
+                <div class="card-heading">
+                  <div>
+                    <span class="card-icon">📊</span><h2>System activity</h2>
+                  </div>
+                  <div class="segmented" id="activity-filter">
+                    <button class="active" data-range="7">7 days</button>
+                    <button data-range="30">30 days</button>
+                  </div>
+                </div>
+                <div class="chart-legend">
+                  <span><i class="dot cyan"></i> Users</span>
+                  <span><i class="dot blue"></i> Chats</span>
+                  <span class="chart-empty">No activity recorded</span>
+                </div>
+                <div class="chart-area">
+                  <div class="chart-y">
+                    <span>100</span><span>75</span><span>50</span><span>25</span><span>0</span>
+                  </div>
+                  <div class="empty-chart">
+                    <span class="empty-chart-icon">∿</span>
+                    <span>Activity data will appear here</span>
+                  </div>
+                </div>
+                <div class="chart-x">
+                  <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+                </div>
+              </div>
+
+              <!-- System Status -->
+              <div class="section-card">
+                <div class="card-heading">
+                  <div>
+                    <span class="card-icon">🛡</span><h2>System status</h2>
+                  </div>
+                </div>
+                <div class="status-list" id="status-list"></div>
+                <div class="status-foot">
+                  <span>Last checked</span><strong>Just now</strong>
+                </div>
+              </div>
+
+              <!-- Recent Activity -->
+              <div class="section-card recent-card">
+                <div class="card-heading">
+                  <div>
+                    <span class="card-icon">⏱</span><h2>Recent activity</h2>
+                  </div>
+                </div>
+                <div class="empty-state">
+                  <div class="empty-icon">⏱</div>
+                  <strong>No recent activity</strong>
+                  <span>When connected services report events, they will appear here.</span>
+                </div>
+              </div>
+
+              <!-- Quick Actions -->
+              <div class="section-card">
+                <div class="card-heading">
+                  <div>
+                    <span class="card-icon">✦</span><h2>Quick actions</h2>
+                  </div>
+                </div>
+                <div class="quick-actions" id="quick-actions"></div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ============ 2. USERS ============ -->
+          <section id="section-users" class="content-section">
+            <div class="page-header">
+              <div>
+                <div class="eyebrow">
+                  <span></span>02 / IDENTITY
+                </div>
+                <h1>Users Management</h1>
+                <p>Review accounts, roles, access state, and recent sign-in activity.</p>
+              </div>
+              <button class="button primary" onclick="openModal('user')"><span class="btn-icon">+</span> Add user</button>
+            </div>
+
+            <div class="section-card">
+              <div class="card-heading">
+                <div>
+                  <span class="card-icon">👤</span><h2>Directory</h2>
+                </div>
+                <div class="table-tools">
+                  <div class="search-box">
+                    <span class="search-icon">⌕</span>
+                    <input type="text" id="user-search" placeholder="Search users..." />
+                  </div>
+                  <button class="button secondary small" onclick="showToast('Filter panel opened')"><span class="btn-icon">▽</span> Filter</button>
+                </div>
+              </div>
+              <div class="table-scroll">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>User ID</th>
+                      <th>Username</th>
+                      <th>Email</th>
+                      <th>Access role</th>
+                      <th>Status</th>
+                      <th>Last login</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="users-tbody"></tbody>
+                </table>
+              </div>
+              <div class="table-footer">
+                <span id="users-count">0 users</span>
+                <div>
+                  <button class="icon-button" disabled>‹</button>
+                  <button class="page-number">1</button>
+                  <button class="icon-button" disabled>›</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="role-grid" id="role-grid"></div>
+          </section>
+
+          <!-- ============ 3. API KEYS ============ -->
+          <section id="section-keys" class="content-section">
+            <div class="page-header">
+              <div>
+                <div class="eyebrow">
+                  <span></span>03 / INTEGRATIONS
+                </div>
+                <h1>API Keys Management</h1>
+                <p>Safely manage provider connections and model access without exposing secrets.</p>
+              </div>
+              <button class="button primary" onclick="openModal('key')"><span class="btn-icon">+</span> Add API key</button>
+            </div>
+
+            <div class="section-card">
+              <div class="card-heading">
+                <div>
+                  <span class="card-icon">🔑</span><h2>Provider connections</h2>
+                </div>
+                <button class="button secondary small"><span class="btn-icon">≡</span> All providers</button>
+              </div>
+              <div class="table-scroll">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Provider</th>
+                      <th>Key name</th>
+                      <th>API key (token)</th>
+                      <th>Tool / model version</th>
+                      <th>Usage / quota</th>
+                      <th>Created date</th>
+                      <th>Status</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="keys-tbody"></tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="integration-grid">
+              <div class="section-card">
+                <div class="card-heading">
+                  <div>
+                    <span class="card-icon">⚙</span><h2>Provider → tool / model</h2>
+                  </div>
+                </div>
+                <div class="form-stack">
+                  <label>Provider<select id="provider-select"></select></label>
+                  <label>Tool / model<select id="model-select"></select></label>
+                  <label>API key<input type="password" id="key-input" placeholder="Enter key to connect" autocomplete="off" /></label>
+                  <div class="form-hint">
+                    <span class="hint-icon">🔒</span> Tokens are masked and handled by protected services.
+                  </div>
+                  <button class="button secondary" onclick="showToast('Provider connection requires an authorized backend action.')"><span class="btn-icon">🛡</span> Connect securely</button>
+                </div>
+              </div>
+
+              <div class="section-card">
+                <div class="card-heading">
+                  <div>
+                    <span class="card-icon">🛡</span><h2>Connection safety</h2>
+                  </div>
+                </div>
+                <div class="safety-list">
+                  <div>
+                    <span class="safety-check">✓</span><span>Secrets never appear in tables</span>
+                  </div>
+                  <div>
+                    <span class="safety-check">✓</span><span>Provider models stay scoped</span>
+                  </div>
+                  <div>
+                    <span class="safety-check">✓</span><span>Revoke actions require authorization</span>
+                  </div>
+                  <div>
+                    <span class="safety-warn">⚠</span><span>No providers connected yet</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ============ 4. TERMINAL ============ -->
+          <section id="section-terminal" class="content-section">
+            <div class="page-header">
+              <div>
+                <div class="eyebrow">
+                  <span></span>04 / OPERATIONS
+                </div>
+                <h1>System Terminal</h1>
+                <p>Inspect operational signals and command history. Execution is server-authorized only.</p>
+              </div>
+              <div class="restricted-badge">
+                <span>🔒</span> Owner / Admin only
+              </div>
+            </div>
+
+            <div class="terminal-layout">
+              <div class="terminal-sidebar">
+                <button class="active"><span>▶_</span> System Terminal</button>
+                <button><span>📋</span> Server Logs</button>
+                <button><span>⚙</span> Process Manager</button>
+                <button><span>🕐</span> Command History</button>
+                <div class="sidebar-divider"></div>
+                <button class="danger-action" onclick="clearTerminal()"><span>🗑</span> Clear terminal</button>
+              </div>
+              <div class="terminal-window">
+                <div class="terminal-top">
+                  <span><i></i> shadow-terminal</span>
+                  <span>read-only preview</span>
+                </div>
+                <div class="terminal-body" id="terminal-body">
+                  <div class="terminal-line muted">SHADOW OS SECURE TERMINAL</div>
+                  <div class="terminal-line">Session ready. Awaiting authorized backend connection.</div>
+                  <div class="terminal-line muted">
+                    Server status: <b>not connected</b>
+                  </div>
+                </div>
+                <div class="terminal-input">
+                  <span class="prompt">$</span>
+                  <input type="text" id="terminal-command" placeholder="Type a command..." />
+                  <button class="button primary small" onclick="executeCommand()"><span class="btn-icon">▶</span> Execute</button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ============ 5. INBOX ============ -->
+          <section id="section-inbox" class="content-section">
+            <div class="page-header">
+              <div>
+                <div class="eyebrow">
+                  <span></span>05 / COMMUNICATIONS
+                </div>
+                <h1>Inbox / Messages</h1>
+                <p>Keep support, user, notification, and system conversations in one place.</p>
+              </div>
+              <button class="button secondary" onclick="showToast('Inbox synced')"><span class="btn-icon">↻</span> Sync inbox</button>
+            </div>
+
+            <div class="inbox-tabs" id="inbox-tabs"></div>
+
+            <div class="inbox-layout">
+              <div class="section-card message-list">
+                <div class="card-heading">
+                  <div>
+                    <span class="card-icon">✉</span><h2 id="inbox-list-title">All messages</h2>
+                  </div>
+                  <div class="search-box">
+                    <span class="search-icon">⌕</span>
+                    <input type="text" placeholder="Search messages..." />
+                  </div>
+                </div>
+                <div class="empty-state">
+                  <div class="empty-icon">✉</div>
+                  <strong>Your inbox is clear</strong>
+                  <span>Incoming conversations and system notices will appear in this panel.</span>
+                </div>
+              </div>
+              <div class="section-card conversation">
+                <div class="card-heading">
+                  <div>
+                    <span class="card-icon">✉</span><h2>Conversation</h2>
+                  </div>
+                </div>
+                <div class="conversation-empty">
+                  <div class="empty-orb">✉</div>
+                  <h3>No conversation selected</h3>
+                  <p>Select a message from the list to view its details and reply.</p>
+                  <button class="button secondary small" onclick="showToast('There are no messages to open yet.')">Check again</button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ============ 6. THEME ============ -->
+          <section id="section-theme" class="content-section">
+            <div class="page-header">
+              <div>
+                <div class="eyebrow">
+                  <span></span>06 / APPEARANCE
+                </div>
+                <h1>Theme / Settings</h1>
+                <p>Shape the control center to match your operating environment.</p>
+              </div>
+              <button class="button primary" onclick="showToast('Theme preference saved locally for this browser.')"><span class="btn-icon">✓</span> Save settings</button>
+            </div>
+
+            <div class="theme-layout">
+              <div class="section-card theme-picker">
+                <div class="card-heading">
+                  <div>
+                    <span class="card-icon">◐</span><h2>Choose theme</h2>
+                  </div>
+                </div>
+                <div class="theme-grid" id="theme-grid"></div>
+              </div>
+
+              <div class="section-card">
+                <div class="card-heading">
+                  <div>
+                    <span class="card-icon">⚙</span><h2>Interface settings</h2>
+                  </div>
+                </div>
+                <div class="settings-list">
+                  <label class="setting-row">
+                    <span><strong>Compact data tables</strong><small>Fit more records into operational views</small></span>
+                    <input type="checkbox" />
+                  </label>
+                  <label class="setting-row">
+                    <span><strong>Reduce motion</strong><small>Minimize transitions and ambient effects</small></span>
+                    <input type="checkbox" />
+                  </label>
+                  <label class="setting-row">
+                    <span><strong>High contrast status</strong><small>Increase visibility of online indicators</small></span>
+                    <input type="checkbox" checked />
+                  </label>
+                </div>
+                <div class="palette-note">
+                  <span>🌙</span><span>Theme selection persists after refresh.</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ============ 7. SQL / DATABASE ============ -->
+          <section id="section-sql" class="content-section">
+            <div class="page-header">
+              <div>
+                <div class="eyebrow">
+                  <span></span>07 / DATA LAYER
+                </div>
+                <h1>SQL / Database</h1>
+                <p>Review database health and protected query access.</p>
+              </div>
+              <div class="restricted-badge">
+                <span>🔒</span> Owner / Admin only
+              </div>
+            </div>
+
+            <div class="database-kpis" id="db-kpis"></div>
+
+            <div class="sql-grid">
+              <div class="section-card">
+                <div class="card-heading">
+                  <div>
+                    <span class="card-icon">☡</span><h2>Database overview</h2>
+                  </div>
+                </div>
+                <div class="database-placeholder">
+                  <div class="empty-orb">☡</div>
+                  <h3>No database tables available</h3>
+                  <p>Connect a protected data source to inspect tables, backups, and query results.</p>
+                  <button class="button secondary small" onclick="showToast('Database connection requires an authorized backend session.')"><span class="btn-icon">↻</span> Check connection</button>
+                </div>
+              </div>
+              <div class="section-card">
+                <div class="card-heading">
+                  <div>
+                    <span class="card-icon">📁</span><h2>SQL console</h2>
+                  </div>
+                </div>
+                <div class="sql-console">
+                  <div class="restricted-line">
+                    <span>🔒</span> Query execution is protected on the server.
+                  </div>
+                  <textarea id="sql-query" placeholder="Enter your SQL query..."></textarea>
+                  <button class="button primary" onclick="runSql()"><span class="btn-icon">▶</span> Run query</button>
+                  <div class="query-result">
+                    <span>Query results</span>
+                    <small id="sql-result-status">No query executed</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ============ 8. DATA / LOGS ============ -->
+          <section id="section-logs" class="content-section">
+            <div class="page-header">
+              <div>
+                <div class="eyebrow">
+                  <span></span>08 / AUDIT TRAIL
+                </div>
+                <h1>Data / Logs</h1>
+                <p>Search operational history, audit events, and system records.</p>
+              </div>
+              <button class="button secondary" onclick="showToast('There are no log records to export yet.')"><span class="btn-icon">⬇</span> Export</button>
+            </div>
+
+            <div class="log-tabs" id="log-tabs"></div>
+
+            <div class="section-card">
+              <div class="card-heading">
+                <div>
+                  <span class="card-icon">≡</span><h2 id="logs-title">Chat Logs</h2>
+                </div>
+                <div class="table-tools">
+                  <select class="compact-select" id="log-date-filter">
+                    <option>Last 7 days</option>
+                    <option>Last 30 days</option>
+                  </select>
+                  <select class="compact-select" id="log-user-filter">
+                    <option>All users</option>
+                  </select>
+                  <div class="search-box">
+                    <span class="search-icon">⌕</span>
+                    <input type="text" id="log-search" placeholder="Search logs..." />
+                  </div>
+                  <button class="icon-button" aria-label="Filter">▽</button>
+                </div>
+              </div>
+              <div class="table-scroll">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Time</th>
+                      <th>User</th>
+                      <th>Action</th>
+                      <th>Details</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="logs-tbody"></tbody>
+                </table>
+              </div>
+              <div class="table-footer">
+                <span id="logs-count">0 log records</span>
+                <div>
+                  <button class="icon-button" disabled>‹</button>
+                  <button class="page-number">1</button>
+                  <button class="icon-button" disabled>›</button>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      
+      </main>
+    </div>
+  </div>
+
+  <!-- ============ TOAST ============ -->
+  <div id="toast" class="toast"></div>
+
+  <!-- ============ MODAL ============ -->
+  <div id="modal-backdrop" class="modal-backdrop">
+    <div class="modal" id="modal-content"></div>
+  </div>
+
+  <script src="{{ url_for('static', filename='Js/sidebar.js') }}"></script>
+  <script src="{{ url_for('static', filename='Js/admin.js') }}"></script>
+
+</body>
+</html>

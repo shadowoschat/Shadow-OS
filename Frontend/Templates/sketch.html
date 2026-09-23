@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SHADOW OS — Sketch Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Orbitron:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='CSS/sidebar.css') }}" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='CSS/responsive.css') }}" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='CSS/sketch.css') }}" />
+</head>
+<body>
+  <div class="mobile-sidebar-backdrop" id="mobileBackdrop"></div>
+
+  <!-- ==================== 1. TOP NAVBAR ==================== -->
+  <header class="top-navbar" id="topNavbar">
+    <div class="navbar-left">
+      <div class="window-controls" title="System Matrix">
+        <span class="ctrl-dot red"></span>
+        <span class="ctrl-dot yellow"></span>
+        <span class="ctrl-dot green"></span>
+      </div>
+      <a href="/dashboard" class="navbar-brand-link">
+        <img src="{{ url_for('static', filename='image/logo.svg') }}" alt="Shadow OS Logo" class="navbar-logo-img" />
+        <div class="navbar-brand-text">
+          <span class="navbar-brand-title">SHADOW <span class="accent">OS</span></span>
+          <span class="navbar-brand-badge">NEURAL SYSTEM</span>
+        </div>
+      </a>
+    </div>
+
+    <div class="navbar-center">
+      <div class="global-search-container">
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input type="text" id="globalSearchInput" placeholder="Search commands, modules, neural files..." autocomplete="off" />
+        <div class="search-results-dropdown" id="searchResultsDropdown" style="display: none;"></div>
+      </div>
+    </div>
+
+    <div class="navbar-right">
+      <!-- Notification -->
+      <div class="nav-action-wrap">
+        <button class="nav-action-btn" id="navNotifBtn" title="System Notifications">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+          </svg>
+          <span class="notif-badge-pulse" id="notifBadge"></span>
+        </button>
+        <div class="dropdown-menu notif-dropdown" id="notifDropdown" style="display: none;">
+          <div class="dropdown-header">
+            <span>SYSTEM LOGS & ALERTS</span>
+            <button class="clear-notif-btn" id="clearNotifBtn">CLEAR</button>
+          </div>
+          <div class="notif-list" id="notifList">
+            <div class="notif-item">
+              <span class="notif-dot online"></span>
+              <div class="notif-info">
+                <span class="notif-title">SHADOW CV Pipeline Online</span>
+                <span class="notif-time">OpenCV Contour Engine Ready</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Network Status Indicator -->
+      <div class="network-status-indicator" id="navNetworkStatus" title="Network Telemetry">
+        <span class="network-dot"></span>
+        <span class="network-label" id="navNetworkLabel">ONLINE</span>
+      </div>
+
+      <!-- Settings -->
+      <div class="nav-action-wrap">
+        <button class="nav-action-btn" id="navSettingsBtn" title="System Settings">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+          </svg>
+        </button>
+        <div class="dropdown-menu settings-dropdown" id="settingsDropdown" style="display: none;">
+          <a href="/profile" class="dropdown-item">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <span>Operator Profile</span>
+          </a>
+          <a href="/api-keys" class="dropdown-item">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2l-2 2m-1.5 1.5L16 7l-1.5-1.5-1.5 1.5 1.5 1.5-1.5 1.5 1.5 1.5-4 4a5.5 5.5 0 1 1-7.778-7.778 5.5 5.5 0 0 1 7.778 0L21 2z"></path></svg>
+            <span>Neural API Keys</span>
+          </a>
+          <a href="/upgrade" class="dropdown-item">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"></path></svg>
+            <span>System Tiers</span>
+          </a>
+          <div class="dropdown-divider"></div>
+          <button class="dropdown-item danger logout-btn" id="navLogoutBtn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+            <span>Disconnect Session</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile Menu Toggle -->
+      <button class="mobile-menu-toggle" id="mobileMenuBtn" aria-label="Open Navigation">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="app-layout">
+    <!-- ==================== 2. LEFT SIDEBAR ==================== -->
+    <aside class="sidebar" id="mainSidebar">
+      <!-- Clean Top Controls Bar -->
+      <div class="sidebar-top-strip">
+        <span class="sidebar-title-label">NAVIGATION</span>
+        <button class="mobile-sidebar-close" id="mobileSidebarClose" aria-label="Close Sidebar">✕</button>
+        <button class="sidebar-toggle-btn" id="sidebarToggleBtn" aria-label="Toggle Sidebar" title="Collapse / Expand Sidebar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Navigation Menu -->
+      <nav class="sidebar-nav">
+        <a href="/dashboard" class="nav-item" data-tooltip="Dashboard">
+          <div class="nav-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="7" height="7"></rect>
+              <rect x="14" y="3" width="7" height="7"></rect>
+              <rect x="14" y="14" width="7" height="7"></rect>
+              <rect x="3" y="14" width="7" height="7"></rect>
+            </svg>
+          </div>
+          <span class="nav-label">Dashboard</span>
+        </a>
+
+        <a href="/ai-chatbot" class="nav-item" data-tooltip="AI Chatbot">
+          <div class="nav-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="11" width="18" height="10" rx="2"></rect>
+              <circle cx="12" cy="5" r="2"></circle>
+              <path d="M12 7v4"></path>
+              <line x1="8" y1="16" x2="8" y2="16"></line>
+              <line x1="16" y1="16" x2="16" y2="16"></line>
+            </svg>
+          </div>
+          <span class="nav-label">AI Chatbot</span>
+        </a>
+
+        <a href="/image" class="nav-item" data-tooltip="Image Studio">
+          <div class="nav-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+              <circle cx="8.5" cy="8.5" r="1.5"></circle>
+              <polyline points="21 15 16 10 5 21"></polyline>
+            </svg>
+          </div>
+          <span class="nav-label">Image Studio</span>
+        </a>
+
+        <a href="/sketch" class="nav-item active" data-tooltip="Sketch Studio">
+          <div class="nav-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 19l7-7 3 3-7 7-3-3z"></path>
+              <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path>
+              <path d="M2 2l7.586 7.586"></path>
+              <circle cx="11" cy="11" r="2"></circle>
+            </svg>
+          </div>
+          <span class="nav-label">Sketch Studio</span>
+        </a>
+
+        <a href="/music" class="nav-item" data-tooltip="Music Player">
+          <div class="nav-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 18V5l12-2v13"></path>
+              <circle cx="6" cy="18" r="3"></circle>
+              <circle cx="18" cy="16" r="3"></circle>
+            </svg>
+          </div>
+          <span class="nav-label">Music Player</span>
+        </a>
+
+        <a href="/files" class="nav-item" data-tooltip="Neural Files">
+          <div class="nav-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+            </svg>
+          </div>
+          <span class="nav-label">Files</span>
+        </a>
+
+        <div class="nav-section-title">SYSTEM</div>
+
+        <a href="/api-keys" class="nav-item" data-tooltip="API Keys">
+          <div class="nav-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 2l-2 2m-1.5 1.5L16 7l-1.5-1.5-1.5 1.5 1.5 1.5-1.5 1.5 1.5 1.5-4 4a5.5 5.5 0 1 1-7.778-7.778 5.5 5.5 0 0 1 7.778 0L21 2z"></path>
+            </svg>
+          </div>
+          <span class="nav-label">API Keys</span>
+        </a>
+
+        <a href="/upgrade" class="nav-item" data-tooltip="Upgrade Tiers">
+          <div class="nav-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"></path>
+            </svg>
+          </div>
+          <span class="nav-label">Upgrade</span>
+        </a>
+
+        <a href="/profile" class="nav-item" data-tooltip="Operator Profile">
+          <div class="nav-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+          </div>
+          <span class="nav-label">Profile</span>
+        </a>
+      </nav>
+
+      <!-- Sidebar Bottom: Real Logged-in Operator Profile Card (NO LOGOUT BUTTON) -->
+      <div class="sidebar-footer">
+        <a href="/profile" class="operator-profile-card" title="View Account Profile">
+          <div class="operator-avatar">
+            <img src="{{ url_for('static', filename='image/robot.svg') }}" alt="Operator Avatar" />
+            <span class="operator-online-dot"></span>
+          </div>
+          <div class="operator-info">
+            <span class="operator-name" id="operatorName">Operator</span>
+            <span class="operator-email" id="operatorEmail">operator@shadow.os</span>
+            <span class="operator-status-badge">
+              <span style="width: 5px; height: 5px; border-radius: 50%; background: var(--green);"></span>
+              <span id="operatorRole">ACTIVE</span>
+            </span>
+          </div>
+        </a>
+      </div>
+    </aside>
+
+    <!-- ==================== 3. MAIN SKETCH STUDIO WORKSPACE ==================== -->
+    <div class="main-wrapper">
+      <header class="top-header">
+        <div class="header-left">
+          <div class="page-breadcrumb">
+            <span class="root">SHADOW OS</span>
+            <span class="sep">/</span>
+            <span class="current">Sketch Studio</span>
+          </div>
+        </div>
+        <div class="header-right">
+          <div class="header-clock" id="headerClock">00:00:00 UTC</div>
+        </div>
+      </header>
+
+      <main class="page-container">
+        <div class="sketch-studio-layout">
+          <!-- Studio Mode Tabs -->
+          <div class="studio-tabs-row">
+            <button class="studio-tab-btn active" id="tabAnimateBtn">⚡ AI CONTOUR ANIMATOR</button>
+            <button class="studio-tab-btn" id="tabDrawBtn">✏ INTERACTIVE CANVAS</button>
+          </div>
+
+          <!-- ==================== SECTION 1: AI CONTOUR ANIMATOR ==================== -->
+          <div id="animatePanel">
+            <div class="animator-workspace-grid">
+              <!-- Left: Reference Image Panel -->
+              <div class="animator-card">
+                <div class="hud-panel-header" style="padding:0 0 10px 0; background:none;">
+                  <span class="hud-panel-title">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                      <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                      <polyline points="21 15 16 10 5 21"></polyline>
+                    </svg>
+                    REFERENCE IMAGE
+                  </span>
+                </div>
+
+                <!-- Preview Display -->
+                <div class="reference-image-box">
+                  <img id="refImagePreview" src="" alt="Selected Reference" style="display:none;" />
+                  <span id="noRefMsg" style="color:var(--text-muted);font-size:0.75rem;font-family:var(--font-mono);">Select or upload an image below</span>
+                </div>
+
+                <!-- Navigation & Upload Strip -->
+                <div class="ref-nav-controls">
+                  <button class="btn-cyber" id="prevRefBtn" style="padding:6px 10px; font-size:0.72rem;">◀ PREV</button>
+                  <button class="btn-cyber btn-cyber-primary" id="uploadRefBtn" style="padding:6px 12px; font-size:0.72rem;">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                    <span>UPLOAD</span>
+                  </button>
+                  <input type="file" id="refFileInput" accept="image/*" style="display:none;" />
+                  <button class="btn-cyber" id="nextRefBtn" style="padding:6px 10px; font-size:0.72rem;">NEXT ▶</button>
+                </div>
+
+                <!-- Search / Type Image Name -->
+                <input class="cyber-input no-icon" id="sketchImageNameInput" type="text" placeholder="Type or search image name..." style="height:36px;font-size:0.78rem;" />
+
+                <!-- Grid of Reference Images -->
+                <div class="ref-images-scroll-grid" id="refImageGrid">
+                  <!-- Loaded dynamically -->
+                </div>
+
+                <!-- Run Button -->
+                <button class="btn-cyber btn-cyber-primary" id="runSketchBtn" style="width:100%;height:42px;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                  </svg>
+                  <span>RUN CONTOUR SKETCH</span>
+                </button>
+              </div>
+
+              <!-- Right: Contour Output Panel -->
+              <div class="animator-card">
+                <div class="hud-panel-header" style="padding:0 0 10px 0; background:none; justify-content:space-between;">
+                  <span class="hud-panel-title">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                    </svg>
+                    CONTOUR OUTPUT
+                  </span>
+                  <div style="display:flex;gap:6px;">
+                    <button class="btn-cyber" id="replayContourBtn" style="padding:4px 10px;font-size:0.7rem;">REPLAY</button>
+                    <button class="btn-cyber btn-cyber-primary" id="downloadContourBtn" style="padding:4px 10px;font-size:0.7rem;">SAVE PNG</button>
+                  </div>
+                </div>
+
+                <div class="contour-canvas-frame">
+                  <canvas id="contourCanvas"></canvas>
+
+                  <!-- State Overlays: Empty / Processing / Error -->
+                  <div class="contour-state-overlay" id="contourEmptyOverlay">
+                    <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="1.5">
+                      <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                      <polyline points="2 17 12 22 22 17"></polyline>
+                      <polyline points="2 12 12 17 22 12"></polyline>
+                    </svg>
+                    <span style="font-family:var(--font-display);font-size:0.85rem;color:#fff;">CONTOUR OUTPUT IDLE</span>
+                    <span style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text-muted);">Select a reference image from the left and click "RUN CONTOUR SKETCH"</span>
+                  </div>
+
+                  <div class="contour-state-overlay hidden" id="contourProcessingOverlay">
+                    <div class="scanline-sweep"></div>
+                    <div class="gen-core" style="width:30px;height:30px;"></div>
+                    <span style="font-family:var(--font-display);font-size:0.9rem;color:var(--cyan);letter-spacing:1.5px;">AI EXTRACTING CONTOURS</span>
+                    <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-muted);">Computing bilateral edge filter & rendering pencil contours...</span>
+                  </div>
+
+                  <div class="contour-state-overlay hidden" id="contourErrorOverlay">
+                    <span style="font-family:var(--font-display);font-size:0.85rem;color:var(--pink);">CONTOUR PROCESSING ERROR</span>
+                    <span id="contourErrorMsg" style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text-muted);">Unable to process image. Ensure image exists and retry.</span>
+                  </div>
+                </div>
+
+                <div style="display:flex;justify-content:space-between;align-items:center;font-family:var(--font-mono);font-size:0.7rem;color:var(--text-muted);">
+                  <span>ENGINE: OPENCV BILATERAL FILTER + COLOR DODGE</span>
+                  <span id="contourStatusBadge" style="color:var(--cyan);">STANDBY</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ==================== SECTION 2: INTERACTIVE CANVAS (PAINT STUDIO) ==================== -->
+          <div id="drawPanel" style="display:none;">
+            <div class="paint-studio-card">
+              <!-- Master Paint Toolbar -->
+              <div class="paint-toolbar-container">
+                <!-- Row 1: Drawing Tools & Shapes -->
+                <div class="paint-toolbar-row">
+                  <div class="paint-tool-btn-group">
+                    <span class="tool-category-title">TOOLS:</span>
+                    <button class="tool-btn active" data-tool="pencil" id="toolPencil" title="Pencil Tool">✏️ Pencil</button>
+                    <button class="tool-btn" data-tool="pen" id="toolPen" title="Fine Pen">🖋️ Pen</button>
+                    <button class="tool-btn" data-tool="brush" id="toolBrush" title="Soft Brush">🖌️ Brush</button>
+                    <button class="tool-btn" data-tool="spray" id="toolSpray" title="Airbrush Spray">💨 Spray</button>
+                    <button class="tool-btn" data-tool="eraser" id="toolEraser" title="Eraser">🧹 Eraser</button>
+                    <button class="tool-btn" data-tool="fill" id="toolFill" title="Bucket Fill">🪣 Fill</button>
+                    <button class="tool-btn" data-tool="text" id="toolText" title="Text Stamp">🔤 Text</button>
+                  </div>
+
+                  <div class="paint-tool-btn-group">
+                    <span class="tool-category-title">SHAPES:</span>
+                    <button class="tool-btn" data-tool="line" title="Line">📏 Line</button>
+                    <button class="tool-btn" data-tool="rectangle" title="Rectangle">▭ Rect</button>
+                    <button class="tool-btn" data-tool="circle" title="Circle">◯ Circle</button>
+                    <button class="tool-btn" data-tool="ellipse" title="Ellipse">⬭ Ellipse</button>
+                    <button class="tool-btn" data-tool="arrow" title="Arrow">➔ Arrow</button>
+                  </div>
+                </div>
+
+                <!-- Row 2: Stroke, Color, Zoom & Actions -->
+                <div class="paint-toolbar-row">
+                  <!-- Color Picker & Palette -->
+                  <div class="paint-tool-btn-group" style="align-items:center;">
+                    <span class="tool-category-title">COLOR:</span>
+                    <input type="color" id="brushColorPicker" value="#000000" style="width:32px;height:30px;border:none;background:none;cursor:pointer;" />
+                    <!-- Quick Colors -->
+                    <span class="quick-color" data-color="#000000" style="width:18px;height:18px;border-radius:50%;background:#000000;border:1px solid #aaa;cursor:pointer;"></span>
+                    <span class="quick-color" data-color="#00eaff" style="width:18px;height:18px;border-radius:50%;background:#00eaff;border:1px solid #aaa;cursor:pointer;"></span>
+                    <span class="quick-color" data-color="#00ff9d" style="width:18px;height:18px;border-radius:50%;background:#00ff9d;border:1px solid #aaa;cursor:pointer;"></span>
+                    <span class="quick-color" data-color="#ff0055" style="width:18px;height:18px;border-radius:50%;background:#ff0055;border:1px solid #aaa;cursor:pointer;"></span>
+                    <span class="quick-color" data-color="#ffffff" style="width:18px;height:18px;border-radius:50%;background:#ffffff;border:1px solid #aaa;cursor:pointer;"></span>
+                  </div>
+
+                  <!-- Stroke & Opacity -->
+                  <div class="paint-tool-btn-group" style="align-items:center;">
+                    <span class="tool-category-title">SIZE: <span id="brushSizeLabel">4px</span></span>
+                    <input type="range" id="brushSizeRange" min="1" max="80" value="4" style="width:90px;" />
+                    <span class="tool-category-title">OPACITY: <span id="brushOpacityLabel">100%</span></span>
+                    <input type="range" id="brushOpacityRange" min="10" max="100" value="100" style="width:70px;" />
+                  </div>
+
+                  <!-- Actions: Undo, Redo, Zoom, Clear, Export -->
+                  <div class="paint-tool-btn-group">
+                    <button class="btn-cyber" id="canvasUndoBtn" title="Undo (Ctrl+Z)" style="padding:5px 9px;font-size:0.72rem;">↩ UNDO</button>
+                    <button class="btn-cyber" id="canvasRedoBtn" title="Redo (Ctrl+Y)" style="padding:5px 9px;font-size:0.72rem;">↪ REDO</button>
+                    <button class="btn-cyber" id="canvasZoomInBtn" title="Zoom In" style="padding:5px 9px;font-size:0.72rem;">🔍 +</button>
+                    <button class="btn-cyber" id="canvasZoomOutBtn" title="Zoom Out" style="padding:5px 9px;font-size:0.72rem;">🔍 -</button>
+                    <button class="btn-cyber" id="canvasResetZoomBtn" title="Reset View" style="padding:5px 9px;font-size:0.72rem;">1:1</button>
+                    <button class="btn-cyber btn-cyber-danger" id="canvasClearBtn" style="padding:5px 9px;font-size:0.72rem;">CLEAR</button>
+                    <button class="btn-cyber btn-cyber-primary" id="saveDrawingBtn" style="padding:5px 12px;font-size:0.72rem;">SAVE PNG</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Canvas Viewport -->
+              <div class="paint-canvas-viewport" id="canvasViewport">
+                <canvas id="drawCanvas"></canvas>
+              </div>
+
+              <!-- Status Bar -->
+              <div class="paint-status-bar">
+                <span>INPUT: MOUSE • TOUCH • STYLUS POINTERS READY</span>
+                <span id="canvasCoords">X: 0 | Y: 0</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='Js/sidebar.js') }}"></script>
+  <script src="{{ url_for('static', filename='Js/sketch.js') }}"></script>
+</body>
+</html>

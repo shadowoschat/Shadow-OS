@@ -1,0 +1,61 @@
+# ================================
+# Shadow OS - Git Ignore
+# ================================
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual environments
+venv/
+env/
+.venv/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Runtime / generated data
+Data/TTS/*
+Data/Generate_ai_images/*
+Data/Files/*.data
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+
+# Test / cache
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Local databases
+*.db
+*.sqlite
+*.sqlite3
+
+
+
+# Runtime JSON data
+Data/*.json
+
+# Runtime/generated data
+Data/*.data
+Data/TTS/*
+Data/Generate_ai_images/*

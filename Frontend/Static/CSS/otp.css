@@ -1,0 +1,13 @@
+/* ==========================================================================
+   SHADOW OS — OTP Verification Specific Stylesheet
+   ========================================================================== */
+@import url("login.css");
+
+.otp-instruction {
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: rgba(240, 253, 250, 0.7);
+  margin-bottom: 12px;
+  line-height: 1.4;
+}

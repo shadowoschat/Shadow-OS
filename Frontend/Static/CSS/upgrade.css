@@ -1,0 +1,213 @@
+/* ==========================================================================
+   SHADOW OS — Upgrade Matrix Stylesheet
+   ========================================================================== */
+
+.upgrade-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+/* Billing Toggle */
+.billing-toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.billing-switch {
+  position: relative;
+  width: 56px;
+  height: 28px;
+}
+
+.billing-switch input { opacity: 0; width: 0; height: 0; }
+
+.billing-slider {
+  position: absolute;
+  cursor: pointer;
+  inset: 0;
+  background: rgba(0, 234, 255, 0.1);
+  border: 1px solid rgba(0, 234, 255, 0.3);
+  border-radius: 28px;
+  transition: var(--trans-smooth);
+}
+
+.billing-slider:before {
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  left: 4px;
+  bottom: 3px;
+  background: var(--cyan);
+  border-radius: 50%;
+  transition: var(--trans-smooth);
+}
+
+.billing-switch input:checked + .billing-slider:before {
+  transform: translateX(26px);
+}
+
+.billing-switch input:checked + .billing-slider {
+  background: rgba(0, 234, 255, 0.2);
+  box-shadow: 0 0 12px rgba(0, 234, 255, 0.3);
+}
+
+.billing-annual-badge {
+  background: rgba(0, 255, 128, 0.15);
+  color: #00ff80;
+  border: 1px solid #00ff8060;
+  border-radius: 12px;
+  padding: 2px 8px;
+  font-size: 0.72rem;
+}
+
+/* Pricing Cards */
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 22px;
+  align-items: start;
+}
+
+.pricing-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-neon);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  position: relative;
+  transition: var(--trans-smooth);
+}
+
+.pricing-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+}
+
+.pricing-card.featured {
+  border-color: var(--cyan);
+  box-shadow: 0 0 30px rgba(0, 234, 255, 0.2);
+}
+
+.pricing-card.featured::before {
+  content: "MOST POWERFUL";
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--cyan);
+  color: #000;
+  font-family: var(--font-display);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  padding: 3px 14px;
+  border-radius: 12px;
+}
+
+.pricing-tier-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+
+.pricing-price {
+  font-family: var(--font-display);
+  font-size: 2.4rem;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1;
+}
+
+.pricing-price sup {
+  font-size: 1rem;
+  vertical-align: super;
+  color: var(--text-muted);
+}
+
+.pricing-price span {
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}
+
+.pricing-features-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pricing-features-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  color: #c8d0e0;
+}
+
+.pricing-features-list li svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+  color: var(--cyan);
+}
+
+.pricing-features-list li.disabled {
+  color: var(--text-muted);
+  text-decoration: line-through;
+}
+
+.pricing-features-list li.disabled svg {
+  color: var(--text-muted);
+}
+
+/* Comparison Table */
+.comparison-table-wrap {
+  background: var(--bg-card);
+  border: 1px solid var(--border-neon);
+  border-radius: var(--radius-lg);
+  overflow-x: auto;
+}
+
+.comparison-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+}
+
+.comparison-table th {
+  padding: 14px 20px;
+  text-align: left;
+  color: var(--cyan);
+  border-bottom: 1px solid rgba(0, 234, 255, 0.15);
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+}
+
+.comparison-table td {
+  padding: 12px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  color: #c8d0e0;
+}
+
+.comparison-table tr:last-child td { border-bottom: none; }
+
+.check-yes { color: #00ff80; }
+.check-no  { color: var(--text-muted); }

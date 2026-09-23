@@ -1,0 +1,237 @@
+/* ==========================================================================
+   SHADOW OS — Futuristic Loading Screen Styles
+   ========================================================================== */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  width: 100vw;
+  height: 100vh;
+  background: #02050e;
+  color: #f0fdfa;
+  font-family: 'Orbitron', sans-serif;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+/* Background Cyber Grid */
+.loading-bg {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    radial-gradient(circle at 50% 50%, rgba(0, 234, 255, 0.12) 0%, transparent 70%),
+    linear-gradient(rgba(0, 234, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 234, 255, 0.04) 1px, transparent 1px);
+  background-size: 100% 100%, 32px 32px, 32px 32px;
+  pointer-events: none;
+}
+
+/* Loading Center Chassis */
+.loading-chassis {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 520px;
+  width: 90%;
+  padding: 36px 28px;
+  background: rgba(8, 15, 32, 0.85);
+  border: 1px solid rgba(0, 234, 255, 0.3);
+  border-radius: 20px;
+  box-shadow: 0 0 50px rgba(0, 234, 255, 0.2), inset 0 0 20px rgba(0, 234, 255, 0.05);
+  backdrop-filter: blur(20px);
+}
+
+/* Rotating Energy Rings */
+.reactor-core {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  margin-bottom: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.core-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 2px solid transparent;
+}
+
+.core-ring-1 {
+  width: 100%;
+  height: 100%;
+  border-top-color: #00eaff;
+  border-bottom-color: #00eaff;
+  animation: spinClockwise 3s linear infinite;
+  box-shadow: 0 0 15px rgba(0, 234, 255, 0.5);
+}
+
+.core-ring-2 {
+  width: 78%;
+  height: 78%;
+  border-left-color: #00ff9d;
+  border-right-color: #00ff9d;
+  animation: spinCounter 2s linear infinite;
+  box-shadow: 0 0 12px rgba(0, 255, 157, 0.5);
+}
+
+.core-ring-3 {
+  width: 56%;
+  height: 56%;
+  border-top-color: #9d4edd;
+  border-right-color: #9d4edd;
+  animation: spinClockwise 1.5s linear infinite;
+}
+
+.core-center-logo {
+  width: 44px;
+  height: 44px;
+  filter: drop-shadow(0 0 10px #00eaff);
+  animation: pulseLogo 2s ease-in-out infinite;
+}
+
+@keyframes spinClockwise {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes spinCounter {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(-360deg); }
+}
+
+@keyframes pulseLogo {
+  0%, 100% { transform: scale(1); opacity: 0.9; }
+  50% { transform: scale(1.1); opacity: 1; filter: drop-shadow(0 0 16px #00ff9d); }
+}
+
+/* Titles */
+.loading-title {
+  font-size: 1.6rem;
+  font-weight: 800;
+  letter-spacing: 4px;
+  color: #fff;
+  text-shadow: 0 0 12px rgba(0, 234, 255, 0.5);
+  margin-bottom: 6px;
+  text-align: center;
+}
+
+.loading-title span {
+  color: #00eaff;
+}
+
+.loading-subtitle {
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.8rem;
+  color: #00eaff;
+  letter-spacing: 2px;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+/* Progress Bar */
+.progress-container {
+  width: 100%;
+  margin-bottom: 18px;
+}
+
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  font-family: 'Courier Prime', monospace;
+  color: rgba(240, 253, 250, 0.7);
+  margin-bottom: 8px;
+}
+
+.progress-bar-track {
+  width: 100%;
+  height: 8px;
+  background: rgba(0, 234, 255, 0.1);
+  border-radius: 999px;
+  overflow: hidden;
+  border: 1px solid rgba(0, 234, 255, 0.25);
+  padding: 1px;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #00eaff 0%, #00ff9d 100%);
+  border-radius: 999px;
+  box-shadow: 0 0 12px #00eaff;
+  transition: width 0.15s ease;
+}
+
+/* Diagnostic Status Terminal */
+.status-log-box {
+  width: 100%;
+  background: rgba(3, 8, 18, 0.9);
+  border: 1px solid rgba(0, 234, 255, 0.15);
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.75rem;
+  color: #a0f0ff;
+  height: 72px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  margin-bottom: 22px;
+}
+
+.log-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  opacity: 0;
+  transform: translateY(6px);
+  animation: fadeInLog 0.3s forwards;
+}
+
+.log-line.active {
+  color: #00ff9d;
+  font-weight: bold;
+}
+
+@keyframes fadeInLog {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Skip / Enter Action */
+.btn-enter-system {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 24px;
+  border-radius: 10px;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: #00eaff;
+  background: rgba(0, 234, 255, 0.08);
+  border: 1px solid #00eaff;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  text-decoration: none;
+}
+
+.btn-enter-system:hover {
+  background: #00eaff;
+  color: #000;
+  box-shadow: 0 0 20px rgba(0, 234, 255, 0.6);
+  transform: translateY(-2px);
+}

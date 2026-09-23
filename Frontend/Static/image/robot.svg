@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="100%" height="100%">
+  <defs>
+    <linearGradient id="robotGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00eaff" />
+      <stop offset="100%" stop-color="#7928ca" />
+    </linearGradient>
+    <linearGradient id="visorGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#00ff9d" />
+      <stop offset="50%" stop-color="#00eaff" />
+      <stop offset="100%" stop-color="#00ff9d" />
+    </linearGradient>
+    <filter id="botGlow">
+      <feGaussianBlur stdDeviation="3" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
+  <!-- Head Chassis -->
+  <rect x="25" y="30" width="70" height="55" rx="14" fill="#0b1329" stroke="url(#robotGrad)" stroke-width="2.5" filter="url(#botGlow)" />
+  <!-- Antennas -->
+  <line x1="60" y1="30" x2="60" y2="12" stroke="#00eaff" stroke-width="3" stroke-linecap="round" />
+  <circle cx="60" cy="10" r="4" fill="#00ff9d" filter="url(#botGlow)" />
+  <line x1="30" y1="40" x2="18" y2="35" stroke="#00eaff" stroke-width="2.5" stroke-linecap="round" />
+  <line x1="90" y1="40" x2="102" y2="35" stroke="#00eaff" stroke-width="2.5" stroke-linecap="round" />
+  <!-- Cyber Visor -->
+  <rect x="35" y="44" width="50" height="18" rx="8" fill="#030816" stroke="url(#visorGrad)" stroke-width="2" />
+  <!-- Visor Eyes / Scanning Wave -->
+  <circle cx="48" cy="53" r="3.5" fill="#00eaff" filter="url(#botGlow)" />
+  <circle cx="72" cy="53" r="3.5" fill="#00eaff" filter="url(#botGlow)" />
+  <line x1="53" y1="53" x2="67" y2="53" stroke="#00ff9d" stroke-width="1.5" stroke-dasharray="3 2" />
+  <!-- Mouth Grille -->
+  <line x1="45" y1="72" x2="75" y2="72" stroke="#00eaff" stroke-width="2" stroke-linecap="round" opacity="0.8" />
+  <line x1="48" y1="76" x2="72" y2="76" stroke="#00eaff" stroke-width="1.5" stroke-linecap="round" opacity="0.5" />
+  <!-- Ear Nodes -->
+  <circle cx="25" cy="57" r="4" fill="#00eaff" />
+  <circle cx="95" cy="57" r="4" fill="#00eaff" />
+  <!-- Neck / Base Collar -->
+  <path d="M42 85 L78 85 L84 100 L36 100 Z" fill="#0e1b38" stroke="#00eaff" stroke-width="1.5" />
+</svg>

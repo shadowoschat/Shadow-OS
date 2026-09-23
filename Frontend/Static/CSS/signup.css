@@ -1,0 +1,14 @@
+/* ==========================================================================
+   SHADOW OS — Signup Specific Stylesheet
+   ========================================================================== */
+@import url("login.css");
+
+.signup-badge {
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--green);
+  margin-top: -12px;
+  margin-bottom: 16px;
+  letter-spacing: 1px;
+}

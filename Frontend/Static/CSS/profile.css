@@ -1,0 +1,218 @@
+/* ==========================================================================
+   SHADOW OS — Operator Profile Stylesheet
+   ========================================================================== */
+
+.profile-layout {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .profile-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Avatar Card */
+.profile-avatar-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-neon);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  text-align: center;
+}
+
+.avatar-ring {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  border: 2px solid var(--cyan);
+  padding: 4px;
+  box-shadow: 0 0 20px rgba(0, 234, 255, 0.3);
+  overflow: hidden;
+  position: relative;
+}
+
+.avatar-ring img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.operator-display-name {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 1px;
+}
+
+.operator-tier-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 14px;
+  border-radius: 20px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  background: rgba(0, 234, 255, 0.1);
+  border: 1px solid rgba(0, 234, 255, 0.3);
+  color: var(--cyan);
+}
+
+.session-meta-list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-top: 1px solid rgba(0, 234, 255, 0.1);
+  padding-top: 14px;
+}
+
+.session-meta-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+}
+
+.session-meta-item .key {
+  color: var(--text-muted);
+}
+
+.session-meta-item .val {
+  color: #fff;
+}
+
+/* Profile content area */
+.profile-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Section Cards */
+.profile-section-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-neon);
+  border-radius: var(--radius-lg);
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Security Setting Rows */
+.security-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(0, 234, 255, 0.07);
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.security-row:last-child {
+  border-bottom: none;
+}
+
+.security-label {
+  font-family: var(--font-sans);
+  font-size: 0.88rem;
+  color: #c8d0e0;
+  font-weight: 500;
+}
+
+.security-desc {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  margin-top: 3px;
+}
+
+/* Toggle switch */
+.toggle-switch {
+  position: relative;
+  width: 44px;
+  height: 24px;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-switch-slider {
+  position: absolute;
+  cursor: pointer;
+  inset: 0;
+  background: rgba(0, 234, 255, 0.08);
+  border: 1px solid rgba(0, 234, 255, 0.25);
+  border-radius: 24px;
+  transition: var(--trans-smooth);
+}
+
+.toggle-switch-slider:before {
+  content: "";
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  left: 3px;
+  top: 3px;
+  background: var(--text-muted);
+  border-radius: 50%;
+  transition: var(--trans-smooth);
+}
+
+.toggle-switch input:checked + .toggle-switch-slider {
+  background: rgba(0, 234, 255, 0.18);
+  border-color: var(--cyan);
+}
+
+.toggle-switch input:checked + .toggle-switch-slider:before {
+  transform: translateX(20px);
+  background: var(--cyan);
+  box-shadow: 0 0 8px rgba(0, 234, 255, 0.6);
+}
+
+/* Device cards */
+.device-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.device-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: rgba(4, 10, 24, 0.6);
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(0, 234, 255, 0.1);
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.device-name {
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  color: #fff;
+}
+
+.device-meta {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
