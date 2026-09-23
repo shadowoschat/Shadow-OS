@@ -24,7 +24,7 @@ pywhatkit
 yt-dlp
 supabase
 psycopg2-binary
-
+PyQt5
 # Notes:
 # - 'requests' pinned to >=2.32.3 to resolve instructor/request conflict.
 # - 'psycopg2-binary' is used for PostgreSQL on Render.
