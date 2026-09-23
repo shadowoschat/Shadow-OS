@@ -2,7 +2,7 @@ import os
 import sys
 import cv2
 import numpy as np
-
+from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
 from PyQt5.QtWidgets import (
     QApplication, QWidget, QLabel, QFrame,
     QHBoxLayout, QVBoxLayout, QScrollArea
