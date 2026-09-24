@@ -1,6 +1,9 @@
+# Conditional import of AppOpener – only used on Windows.
+# Import lazily in functions that need it.
+# If unavailable (e.g., on Linux), the variables remain None.
 try:
     from AppOpener import close, open as appopen
-except Exception:
+except Exception:  # pragma: no cover
     appopen = None
     close = None
 
@@ -11,7 +14,10 @@ from groq import Groq
 import webbrowser
 import subprocess
 import requests
-import keyboard
+try:
+    import keyboard
+except Exception:  # pragma: no cover - optional on non-Windows
+    keyboard = None
 import asyncio
 import os
 import mss
