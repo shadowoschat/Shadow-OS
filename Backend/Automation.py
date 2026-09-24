@@ -76,6 +76,8 @@ HARDWARE CONTROL FUNCTIONS
 def SetVolume(level):
     """Set system volume to specified level (0-100)."""
     import re
+    if platform.system() != "Windows":
+        return "Volume control is only available on Windows desktop hosts."
     try:
         match = re.search(r'\d+', str(level))
         if match:
@@ -114,6 +116,8 @@ def SetVolume(level):
 def SetBrightness(level):
     """Set screen brightness to specified level (0-100)."""
     import re
+    if platform.system() != "Windows":
+        return "Brightness control is only available on Windows desktop hosts."
     try:
         match = re.search(r'\d+', str(level))
         if match:
@@ -143,6 +147,8 @@ def SetBrightness(level):
 
 def TakeScreenshot(full=True):
     """Take a screenshot and open it."""
+    if platform.system() != "Windows":
+        return "Screenshot capture is only available on Windows desktop hosts."
     try:
         DATA_DIR = Path(__file__).parent.parent / "Data"
         DATA_DIR.mkdir(exist_ok=True)
@@ -162,6 +168,8 @@ def TakeScreenshot(full=True):
 
 def StartScreenRecording():
     """Start screen recording using FFmpeg."""
+    if platform.system() != "Windows":
+        return "Screen recording is only available on Windows desktop hosts."
     try:
         DATA_DIR = Path(__file__).parent.parent / "Data"
         DATA_DIR.mkdir(exist_ok=True)
@@ -186,6 +194,8 @@ def StartScreenRecording():
 
 def StopScreenRecording():
     """Stop screen recording."""
+    if platform.system() != "Windows":
+        return "Screen recording is only available on Windows desktop hosts."
     try:
         subprocess.run('taskkill /IM ffmpeg.exe /F', shell=True, capture_output=True)
         return "Screen recording stopped."

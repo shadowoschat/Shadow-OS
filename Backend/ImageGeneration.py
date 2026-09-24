@@ -84,6 +84,11 @@ def generate_images(prompt):
             filename = f"{safe_name}_{timestamp}_{i:02d}.png"
             file_path = IMAGE_DIR / filename
             img.save(file_path, "PNG")
+            try:
+                from Backend.config import maybe_upload_to_supabase
+                maybe_upload_to_supabase(file_path, bucket_name="images")
+            except Exception:
+                pass
             saved_paths.append(str(file_path))
         sleep(1)
 

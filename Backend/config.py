@@ -63,3 +63,22 @@ def mask_secret(value):
     if len(value) <= 8:
         return "*" * len(value)
     return value[:4] + ("*" * max(4, len(value) - 8)) + value[-4:]
+
+
+def maybe_upload_to_supabase(file_path, bucket_name="artifacts"):
+    """Upload generated application artifacts to Supabase Storage when configured."""
+    if not file_path:
+        return None
+    try:
+        from Backend.Database.supabase_client import supabase
+        if not supabase:
+            return None
+        path = Path(file_path)
+        if not path.exists():
+            return None
+        with path.open("rb") as fh:
+            storage = supabase.storage.from_(bucket_name)
+            storage.upload(path.name, fh, file_options={"content-type": "application/octet-stream"})
+        return f"{bucket_name}/{path.name}"
+    except Exception:
+        return None

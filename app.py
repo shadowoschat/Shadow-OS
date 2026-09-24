@@ -90,13 +90,7 @@ app = Flask(
 
 secret_key = os.getenv("SECRET_KEY")
 if not secret_key:
-    # Generate and persist a secure random secret key if missing
-    secret_key = secrets.token_hex(32)
-    try:
-        from dotenv import set_key
-        set_key(os.path.join(BASE_DIR, ".env"), "SECRET_KEY", secret_key)
-    except Exception:
-        pass
+    raise RuntimeError("SECRET_KEY is required. Set it in the Render environment variables before starting the app.")
 app.secret_key = secret_key
 
 # Only attempt to ensure the owner account if a DATABASE_URL is configured.
@@ -122,7 +116,19 @@ elif owner_email and owner_username and owner_password:
 else:
     app.logger.info("Skipping ensure_owner_account: OWNER_EMAIL/OWNER_USERNAME/OWNER_PASSWORD not set.")
 
-CORS(app, resources={r"/api/*": {"origins": "*"}})
+def _get_cors_origins():
+    configured = os.getenv("CORS_ALLOWED_ORIGINS", "")
+    if configured:
+        return [origin.strip() for origin in configured.split(",") if origin.strip()]
+    return [
+        "http://localhost:5000",
+        "http://127.0.0.1:5000",
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+    ]
+
+
+CORS(app, resources={r"/api/*": {"origins": _get_cors_origins()}})
 
 # -----------------------------
 # Email Configuration
@@ -264,7 +270,23 @@ def update_system_data():
         time.sleep(2)
 
 
-threading.Thread(target=update_system_data, daemon=True).start()
+SYSTEM_MONITOR_THREAD = None
+
+
+def start_system_monitor():
+    global SYSTEM_MONITOR_THREAD
+    if SYSTEM_MONITOR_THREAD is not None and SYSTEM_MONITOR_THREAD.is_alive():
+        return SYSTEM_MONITOR_THREAD
+    SYSTEM_MONITOR_THREAD = threading.Thread(
+        target=update_system_data,
+        daemon=True,
+        name="system-monitor",
+    )
+    SYSTEM_MONITOR_THREAD.start()
+    return SYSTEM_MONITOR_THREAD
+
+
+start_system_monitor()
 
 # -----------------------------
 # SIMPLE SERVER-SIDE COOLDOWN (helps reduce 429)

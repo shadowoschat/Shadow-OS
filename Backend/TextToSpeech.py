@@ -208,6 +208,11 @@ def generate_audio_file(text, voice=None, language=None, gender=None, output_nam
         raise FileNotFoundError(f"Generated TTS file is missing or empty: {output_path}")
 
     logger.info("TTS generation completed | file=%s | size=%s bytes", output_path.name, output_path.stat().st_size)
+    try:
+        from Backend.config import maybe_upload_to_supabase
+        maybe_upload_to_supabase(output_path, bucket_name="audio")
+    except Exception:
+        pass
     return str(output_path)
 
 
@@ -227,11 +232,14 @@ def _play_audio_file(file_path):
             time.sleep(0.1)
     except Exception as exc:
         logger.warning("pygame playback failed for %s: %s", path, exc)
-        try:
-            os.startfile(str(path))
-        except Exception as e:
-            logger.error("Fallback playback also failed: %s", e)
-            raise
+        if os.name == "nt" and hasattr(os, "startfile"):
+            try:
+                os.startfile(str(path))
+                return
+            except Exception as e:
+                logger.error("Fallback playback also failed: %s", e)
+                raise
+        raise
 
 
 def Speak(text: str, voice: str = None, language: str = None, gender: str = None) -> bool:

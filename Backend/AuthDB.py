@@ -4,12 +4,28 @@ from .Database.connection import get_db_cursor
 import psycopg2
 
 
-def ensure_owner_account(first_name: str = "suraj", last_name: str = "pawar",
-                        email: str = "shadowai3846@gmail.com",
-                        username: str = "Shadow@123", password: str = "379037@"):
-    """Ensure the required owner/admin account exists with the fixed credentials."""
-    email_norm = (email or "").strip().lower()
-    username_norm = (username or "").strip().lower()
+def _get_owner_credentials():
+    from Backend.config import get_env
+
+    email = get_env("OWNER_EMAIL")
+    username = get_env("OWNER_USERNAME")
+    password = get_env("OWNER_PASSWORD")
+    return email, username, password
+
+
+def ensure_owner_account(first_name: str = "Admin", last_name: str = "User",
+                        email: str = None, username: str = None, password: str = None):
+    """Ensure the required owner/admin account exists from environment configuration only."""
+    email_value, username_value, password_value = _get_owner_credentials()
+    email = (email or email_value or "").strip()
+    username = (username or username_value or "").strip()
+    password = password or password_value or ""
+
+    if not email or not username or not password:
+        return False
+
+    email_norm = email.lower()
+    username_norm = username.lower()
     password_hash = generate_password_hash(password)
 
     try:

@@ -1,6 +1,3 @@
-# Minimal production requirements for Render (Python 3.12)
-# Includes only packages actually imported by the running Flask app
-
 gunicorn
 Flask
 flask-cors
@@ -10,22 +7,19 @@ psutil
 edge-tts
 pygame
 Pillow
-selenium
-webdriver-manager
-mtranslate
+beautifulsoup4
 groq
 cohere
+mtranslate
 googlesearch-python
-beautifulsoup4
-keyboard
-mss
-opencv-python
-pywhatkit
 yt-dlp
 supabase
 psycopg2-binary
-PyQt5
-# Notes:
-# - 'requests' pinned to >=2.32.3 to resolve instructor/request conflict.
-# - 'psycopg2-binary' is used for PostgreSQL on Render.
-# - Optional/OS-specific packages are included if referenced (e.g., keyboard, pygame, cv2).
+opencv-python
+numpy
+keyboard
+mss
+appopener
+pywhatkit
+selenium
+webdriver-manager

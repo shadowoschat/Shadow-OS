@@ -1,3 +1,4 @@
+import platform
 import subprocess
 import time
 import sys
@@ -68,9 +69,37 @@ def search_local_song(song_name):
 # ==============================
 # PLAY AUDIO
 # ==============================
+def get_browser_audio_url(file_path):
+    file_path = Path(file_path)
+    project_root = Path(__file__).resolve().parent.parent
+    data_root = project_root / "Data"
+    music_root = project_root / "Frontend" / "Music"
+
+    if file_path.is_absolute():
+        if data_root in file_path.parents or str(file_path).startswith(str(data_root)):
+            relative = file_path.relative_to(data_root)
+            return f"/data/{relative.as_posix()}"
+        if music_root in file_path.parents or str(file_path).startswith(str(music_root)):
+            return f"/music/{file_path.name}"
+        return file_path.as_posix()
+
+    if (data_root / file_path).exists():
+        return f"/data/{file_path.as_posix()}"
+    if (music_root / file_path).exists():
+        return f"/music/{Path(file_path).name}"
+    return f"/data/{Path(file_path).name}"
+
+
 def play_audio(file_path):
-    subprocess.Popen(f'start "" "{file_path}"', shell=True)
-    log(f">>> Playing {file_path.name}")
+    file_path = Path(file_path)
+    browser_url = get_browser_audio_url(file_path)
+    if platform.system() == "Windows":
+        subprocess.Popen(f'start "" "{file_path}"', shell=True)
+        log(f">>> Playing {file_path.name}")
+        return {"status": "desktop", "path": str(file_path), "url": browser_url, "message": "Desktop playback launched."}
+
+    log(f">>> Audio ready for browser playback: {file_path.name}")
+    return {"status": "browser_only", "path": str(file_path), "url": browser_url, "message": "The web app streams audio in the browser."}
 
 # ==============================
 # DOWNLOAD SONG

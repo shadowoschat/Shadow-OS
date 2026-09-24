@@ -1,15 +1,105 @@
+import importlib
 import os
 import sys
-import cv2
-import numpy as np
 
-from PyQt5.QtWidgets import (
-    QApplication, QWidget, QLabel, QFrame,
-    QHBoxLayout, QVBoxLayout
-)
-from PyQt5.QtGui import QImage, QPixmap, QPainter, QColor, QBrush, QFont, QMovie
-from PyQt5.QtCore import Qt, QTimer, QPoint, QSize, QUrl
-from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
+try:
+    import cv2
+except Exception:  # pragma: no cover - desktop-only dependency
+    cv2 = None
+
+try:
+    import numpy as np
+except Exception:  # pragma: no cover - desktop-only dependency
+    np = None
+
+# Module-scope placeholders keep the desktop UI code import-safe in headless environments.
+QApplication = None
+QWidget = object
+QLabel = None
+QFrame = None
+QHBoxLayout = None
+QVBoxLayout = None
+QImage = None
+QPixmap = None
+QPainter = None
+QColor = None
+QBrush = None
+QFont = None
+QMovie = None
+Qt = None
+QTimer = None
+QPoint = None
+QSize = None
+QUrl = None
+QMediaPlayer = None
+QMediaContent = None
+
+
+def _require_desktop_sketch_libs():
+    missing = []
+    if cv2 is None:
+        missing.append("opencv-python")
+    if np is None:
+        missing.append("numpy")
+
+    try:
+        widgets_mod = importlib.import_module("PyQt5" + ".QtWidgets")
+        gui_mod = importlib.import_module("PyQt5" + ".QtGui")
+        core_mod = importlib.import_module("PyQt5" + ".QtCore")
+        media_mod = importlib.import_module("PyQt5" + ".QtMultimedia")
+        QApplication = getattr(widgets_mod, "QApplication")
+        QWidget = getattr(widgets_mod, "QWidget")
+        QLabel = getattr(widgets_mod, "QLabel")
+        QFrame = getattr(widgets_mod, "QFrame")
+        QHBoxLayout = getattr(widgets_mod, "QHBoxLayout")
+        QVBoxLayout = getattr(widgets_mod, "QVBoxLayout")
+        QImage = getattr(gui_mod, "QImage")
+        QPixmap = getattr(gui_mod, "QPixmap")
+        QPainter = getattr(gui_mod, "QPainter")
+        QColor = getattr(gui_mod, "QColor")
+        QBrush = getattr(gui_mod, "QBrush")
+        QFont = getattr(gui_mod, "QFont")
+        QMovie = getattr(gui_mod, "QMovie")
+        Qt = getattr(core_mod, "Qt")
+        QTimer = getattr(core_mod, "QTimer")
+        QPoint = getattr(core_mod, "QPoint")
+        QSize = getattr(core_mod, "QSize")
+        QUrl = getattr(core_mod, "QUrl")
+        QMediaPlayer = getattr(media_mod, "QMediaPlayer")
+        QMediaContent = getattr(media_mod, "QMediaContent")
+    except Exception as exc:  # pragma: no cover - optional for server startup
+        raise RuntimeError(
+            "Desktop sketch mode is unavailable in this environment. "
+            "Use the browser-based sketch workflow on Render."
+        ) from exc
+
+    if missing:
+        raise RuntimeError(
+            "Desktop sketch mode requires the following packages: " + ", ".join(sorted(missing))
+        )
+
+    return {
+        "QApplication": QApplication,
+        "QWidget": QWidget,
+        "QLabel": QLabel,
+        "QFrame": QFrame,
+        "QHBoxLayout": QHBoxLayout,
+        "QVBoxLayout": QVBoxLayout,
+        "QImage": QImage,
+        "QPixmap": QPixmap,
+        "QPainter": QPainter,
+        "QColor": QColor,
+        "QBrush": QBrush,
+        "QFont": QFont,
+        "QMovie": QMovie,
+        "Qt": Qt,
+        "QTimer": QTimer,
+        "QPoint": QPoint,
+        "QSize": QSize,
+        "QUrl": QUrl,
+        "QMediaPlayer": QMediaPlayer,
+        "QMediaContent": QMediaContent,
+    }
 
 
 # ======================================================
@@ -31,9 +121,12 @@ def get_image_path(name: str):
 # ======================================================
 # SHADOW SKETCH GUI
 # ======================================================
-class ShadowSketchUI(QWidget):
+class ShadowSketchUI:
     def __init__(self, image_name: str):
-        super().__init__()
+        qt = _require_desktop_sketch_libs()
+        globals().update(qt)
+
+        QWidget.__init__(self)
 
         # ---------------- WINDOW ----------------
         self.setWindowTitle("A.S.T.R.A. Ai – Sketch Mode")
@@ -86,7 +179,7 @@ class ShadowSketchUI(QWidget):
         gif_layout.setContentsMargins(20, 5, 20, 5)
         
         self.gif_label = QLabel(alignment=Qt.AlignCenter)
-        self.gif_movie = QMovie(os.path.join(BASE_DIR, "Frontend/static/sound.gif"))
+        self.gif_movie = QMovie(os.path.join(BASE_DIR, "Frontend", "Static", "image", "sound.gif"))
         self.gif_movie.setScaledSize(QSize(1400, 100))
         self.gif_label.setMovie(self.gif_movie)
         self.gif_movie.start()
@@ -148,7 +241,7 @@ class ShadowSketchUI(QWidget):
 
         # TIMER
         self.media_player = QMediaPlayer()
-        pencil_sound_path = os.path.join(BASE_DIR, "Frontend/static/pencil-sound.mp3")
+        pencil_sound_path = os.path.join(BASE_DIR, "Frontend", "Static", "image", "pencil-sound.mp3")
         self.media_player.setMedia(QMediaContent(QUrl.fromLocalFile(pencil_sound_path)))
         
         self.timer = QTimer()
@@ -216,14 +309,15 @@ class ShadowSketchUI(QWidget):
 # EXTERNAL CALL (app.py use)
 # ======================================================
 def draw_sketch(subject: str):
-    app = QApplication(sys.argv)
+    qt = _require_desktop_sketch_libs()
+    app = qt["QApplication"](sys.argv)
     ui = ShadowSketchUI(subject)
     ui.show()
-    sys.exit(app.exec_())
+    return app.exec_()
 
 
 # ======================================================
 # DIRECT TEST
 # ======================================================
 if __name__ == "__main__":
-    draw_sketch("hanumanji")
+    raise SystemExit(draw_sketch("hanumanji"))
