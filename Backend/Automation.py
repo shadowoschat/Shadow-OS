@@ -1,9 +1,13 @@
-# Conditional import of AppOpener – only used on Windows.
-# Import lazily in functions that need it.
-# If unavailable (e.g., on Linux), the variables remain None.
-try:
-    from AppOpener import close, open as appopen
-except Exception:  # pragma: no cover
+# AppOpener is Windows-only. Never import it on Linux/Render.
+import platform
+
+if platform.system() == "Windows":
+    try:
+        from AppOpener import close, open as appopen
+    except Exception:
+        appopen = None
+        close = None
+else:
     appopen = None
     close = None
 
@@ -14,10 +18,7 @@ from groq import Groq
 import webbrowser
 import subprocess
 import requests
-try:
-    import keyboard
-except Exception:  # pragma: no cover - optional on non-Windows
-    keyboard = None
+import keyboard
 import asyncio
 import os
 import mss
@@ -428,6 +429,24 @@ def OpenApp(app, sess=requests.session()):
     
     app_lower = app.lower().strip()
     print(f"[AUTOMATION] Opening: {app}")
+
+    # Render/Linux has no Windows desktop. Never call explorer/start,
+    # keyboard, or AppOpener on the server.
+    if platform.system() != "Windows":
+        web_targets = {
+            "whatsapp": "https://web.whatsapp.com",
+            "telegram": "https://web.telegram.org",
+            "instagram": "https://instagram.com",
+            "facebook": "https://facebook.com",
+            "adobe express": "https://express.adobe.com",
+            "adobe": "https://adobe.com",
+        }
+        if app_lower in web_targets:
+            return f"Web app available at {web_targets[app_lower]}"
+        if app_lower.startswith(("http://", "https://")):
+            return f"Web app available at {app_lower}"
+        return f"Desktop app opening is unavailable on the Linux server: {app}"
+
     
     # Handle "show" prefix for folders
     is_show = app_lower.startswith("show ")
@@ -680,6 +699,6 @@ async def Automation(commands: list[str]):
     return True
 
 
-# if __name__ == "__main__":
-#     asyncio.run(Automation(["open facebook", "open instagram"]))
+if __name__ == "__main__":
+    asyncio.run(Automation(["open facebook", "open instagram"]))
 

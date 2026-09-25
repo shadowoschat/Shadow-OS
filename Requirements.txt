@@ -19,7 +19,6 @@ opencv-python
 numpy
 keyboard
 mss
-appopener
 pywhatkit
 selenium
 webdriver-manager
